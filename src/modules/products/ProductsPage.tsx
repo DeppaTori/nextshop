@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Product } from "../../entity/Product";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getAllItems, addItem, removeItem } from "../../redux/cartSlice";
+import { CartProduct } from "../../entity/CartProduct";
 
 type ProductsPageProps = {
   products: Product[];
@@ -10,22 +13,17 @@ type ProductCardProps = {
 };
 
 export const ProductsPage = ({ products }: ProductsPageProps) => {
-  const [cartItems, setCartItems] = useState<number[]>([]);
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector(getAllItems);
+
+  const isProductExistInCart = (id: number) => {
+    if (cartItems.findIndex((item) => item.productId === id) > -1) {
+      return true;
+    }
+    return false;
+  };
 
   const Cart = () => <div>Items In Cart: {cartItems.length}</div>;
-  const handleAddToCartClick = (id: number) => {
-    if (!cartItems.includes(id)) {
-      setCartItems((prev) => prev.concat([id]));
-    }
-  };
-
-  const handleRemoveFromCartClick = (id: number) => {
-    if (cartItems.includes(id)) {
-      const tempAr = [...cartItems];
-      tempAr.splice(cartItems.indexOf(id), 1);
-      setCartItems(tempAr);
-    }
-  };
 
   const ProductCard = ({ product }: ProductCardProps) => (
     <div>
@@ -34,12 +32,13 @@ export const ProductsPage = ({ products }: ProductsPageProps) => {
       <p> {product.price} </p>
       <p>
         {" "}
-        {cartItems.includes(product.id) ? (
-          <button onClick={() => handleRemoveFromCartClick(product.id)}>
+        {isProductExistInCart(product.id) ? (
+          // <button onClick={() => handleRemoveFromCartClick(product.id)}>
+          <button onClick={() => dispatch(removeItem(product.id))}>
             Remove from Cart
           </button>
         ) : (
-          <button onClick={() => handleAddToCartClick(product.id)}>
+          <button onClick={() => dispatch(addItem(product))}>
             Add to Cart
           </button>
         )}
@@ -49,9 +48,7 @@ export const ProductsPage = ({ products }: ProductsPageProps) => {
 
   return (
     <>
-      <h1>Welcome to NextShop</h1>
       <Cart />
-      <button>My Cart</button>
       {products.length > 0 && <ProductCard product={products[0]} />}
     </>
   );
