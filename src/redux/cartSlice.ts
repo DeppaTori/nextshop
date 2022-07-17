@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CartProduct } from "../entity/CartProduct";
 import { RootState } from "./store";
+import { Product } from "../entity/Product";
 
 interface CartState {
   items: CartProduct[];
@@ -19,12 +20,24 @@ const cartSlice = createSlice({
     setTotalItems: (state, action: PayloadAction<number>) => {
       state.totalItems += action.payload;
     },
+    addItem: (state, action: PayloadAction<Product>) => {
+      state.items = [
+        ...state.items,
+        {
+          productId: action.payload.id,
+          productName: action.payload.name,
+          quantity: 1,
+          productPrice: action.payload.price,
+          totalPrice: action.payload.price,
+        } as CartProduct,
+      ];
+    },
   },
 });
 
-export const selectItems = (state: RootState) => state.cart.items;
+export const getAllItems = (state: RootState) => state.cart.items;
 export const getTotalItems = (state: RootState) => state.cart.totalItems;
 
-export const { setTotalItems } = cartSlice.actions;
+export const { setTotalItems, addItem } = cartSlice.actions;
 
 export default cartSlice.reducer;
