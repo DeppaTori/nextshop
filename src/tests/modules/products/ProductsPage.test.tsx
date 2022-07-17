@@ -69,4 +69,19 @@ describe("ProductsPage", () => {
     user.click(removeFromCartBtn);
     expect(screen.getByText("Items In Cart: 0")).toBeInTheDocument();
   });
+
+  it("renders My Cart button", () => {
+    render(<ProductsPage />);
+    expect(screen.getByRole("button", { name: "My Cart" })).toBeInTheDocument();
+  });
+
+  it.skip("renders My Cart page when my cart button is clicked", () => {
+    render(<ProductsPage />);
+
+    user.click(screen.getByRole("button", { name: "My Cart" }));
+
+    expect(
+      screen.getByRole("heading", { name: "My Cart" })
+    ).toBeInTheDocument();
+  });
 });

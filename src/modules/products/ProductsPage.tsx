@@ -51,6 +51,7 @@ export const ProductsPage = ({ products }: ProductsPageProps) => {
     <>
       <h1>Welcome to NextShop</h1>
       <Cart />
+      <button>My Cart</button>
       {products.length > 0 && <ProductCard product={products[0]} />}
     </>
   );

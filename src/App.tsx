@@ -1,5 +1,6 @@
 import "./App.css";
 import { Product } from "./entity/Product";
+import { MyCart } from "./modules/cart/MyCart";
 import { ProductsPage } from "./modules/products/ProductsPage";
 
 function App() {
@@ -14,7 +15,8 @@ function App() {
 
   return (
     <div className="App">
-      <ProductsPage products={products} />
+      {/* <ProductsPage products={products} /> */}
+      <MyCart />
     </div>
   );
 }
