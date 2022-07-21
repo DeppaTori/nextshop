@@ -10,6 +10,11 @@ import { ProductsPage } from "./modules/products/ProductsPage";
 import { Product } from "./entity/Product";
 import { MyCart } from "./modules/cart/MyCart";
 
+if (process.env.NODE_ENV === "development") {
+  const { worker } = require("./mocks/browser");
+  worker.start();
+}
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

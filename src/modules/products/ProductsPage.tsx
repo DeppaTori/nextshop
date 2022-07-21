@@ -33,7 +33,6 @@ export const ProductsPage = ({ products }: ProductsPageProps) => {
       <p>
         {" "}
         {isProductExistInCart(product.id) ? (
-          // <button onClick={() => handleRemoveFromCartClick(product.id)}>
           <button onClick={() => dispatch(removeItem(product.id))}>
             Remove from Cart
           </button>
