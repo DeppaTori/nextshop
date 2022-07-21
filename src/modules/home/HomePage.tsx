@@ -3,6 +3,8 @@ import { ProductsPage } from "../products/ProductsPage";
 import { Product } from "../../entity/Product";
 import { useEffect, useState } from "react";
 import { API_URL } from "../../helpers/constant";
+import Button from "@mui/material/Button";
+import { Container } from "@mui/material";
 
 export const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -20,16 +22,16 @@ export const HomePage = () => {
   }, []);
 
   return (
-    <>
+    <Container>
       <h1>Welcome to NextShop</h1>
       <Link to="/my-cart">
-        <button>View My Cart</button>
+        <Button variant="contained">View My Cart</Button>
       </Link>
       {isLoading ? (
         <p>loading products...</p>
       ) : (
         <ProductsPage products={products} />
       )}
-    </>
+    </Container>
   );
 };

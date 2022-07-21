@@ -18,7 +18,7 @@ describe("ProductsPage", () => {
     renderWithProviders(<ProductsPage products={products} />);
     expect(screen.getByText(products[0].name)).toBeInTheDocument();
     expect(screen.getByText(products[0].description)).toBeInTheDocument();
-    expect(screen.getByText(products[0].price)).toBeInTheDocument();
+    expect(screen.getByText("Rp. " + products[0].price)).toBeInTheDocument();
   });
 
   it("renders text Items in Cart and it quantity", () => {

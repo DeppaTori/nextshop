@@ -3,6 +3,11 @@ import { Product } from "../../entity/Product";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getAllItems, addItem, removeItem } from "../../redux/cartSlice";
 import { CartProduct } from "../../entity/CartProduct";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { Button, CardActionArea, CardActions } from "@mui/material";
 
 type ProductsPageProps = {
   products: Product[];
@@ -26,23 +31,47 @@ export const ProductsPage = ({ products }: ProductsPageProps) => {
   const Cart = () => <div>Items In Cart: {cartItems.length}</div>;
 
   const ProductCard = ({ product }: ProductCardProps) => (
-    <div>
-      <h3>{product.name}</h3>
-      <p> {product.description} </p>
-      <p> {product.price} </p>
-      <p>
-        {" "}
+    <Card sx={{ maxWidth: 345 }}>
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          height="140"
+          image="https://p-id.ipricegroup.com/0421ea148a329760a3970d12f94055b82b0a9611_0.jpg?position=6"
+          alt={`image of ${product.name}`}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {product.name}
+          </Typography>
+          <Typography gutterBottom variant="h5" component="div">
+            Rp. {product.price}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {product.description}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
         {isProductExistInCart(product.id) ? (
-          <button onClick={() => dispatch(removeItem(product.id))}>
+          <Button
+            size="small"
+            color="primary"
+            role="button"
+            onClick={() => dispatch(removeItem(product.id))}
+          >
             Remove from Cart
-          </button>
+          </Button>
         ) : (
-          <button onClick={() => dispatch(addItem(product))}>
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => dispatch(addItem(product))}
+          >
             Add to Cart
-          </button>
+          </Button>
         )}
-      </p>
-    </div>
+      </CardActions>
+    </Card>
   );
 
   return (

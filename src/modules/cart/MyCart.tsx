@@ -1,3 +1,4 @@
+import { Container } from "@mui/material";
 import { CartProduct } from "../../entity/CartProduct";
 import { Product } from "../../entity/Product";
 import { getAllItems, addItem, getTotalItems } from "../../redux/cartSlice";
@@ -27,18 +28,13 @@ export const MyCart = () => {
   };
 
   return (
-    <div>
+    <Container>
       <h1>My Cart</h1>
       {items.length > 0 ? (
         <CartProducts cproducts={items} />
       ) : (
         <p>No items in cart</p>
       )}
-
-      <button onClick={() => dispatch(addItem(product))}>Add item</button>
-      {/* <p>
-        {product.name} | {product.price}
-      </p> */}
-    </div>
+    </Container>
   );
 };
