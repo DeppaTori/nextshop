@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { MAP_TEST_ID } from "../../../../constants";
 import { CartProduct } from "../../../../entity/CartProduct";
 import { CartProducts } from "../../../../modules/cart/components/CartProducts";
 
@@ -13,7 +14,13 @@ describe("CartProducts", () => {
     },
   ];
   it("shows table header", () => {
-    render(<CartProducts products={products} />);
+    render(
+      <CartProducts
+        products={products}
+        increaseOnClick={jest.fn()}
+        decreaseOnClick={jest.fn()}
+      />
+    );
 
     expect(screen.getByRole("table")).toBeInTheDocument();
     expect(screen.getAllByRole("row")).toHaveLength(3);
@@ -34,7 +41,13 @@ describe("CartProducts", () => {
     ).toBeInTheDocument();
   });
   it("show one product in cart", () => {
-    render(<CartProducts products={products} />);
+    render(
+      <CartProducts
+        products={products}
+        increaseOnClick={jest.fn()}
+        decreaseOnClick={jest.fn()}
+      />
+    );
     expect(screen.getAllByRole("row")).toHaveLength(3);
     expect(screen.getByRole("cell", { name: "1" })).toBeInTheDocument();
     expect(
@@ -43,8 +56,12 @@ describe("CartProducts", () => {
     expect(
       screen.getByRole("cell", { name: products[0].productPrice.toString() })
     ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/quantity/i)).toBeInTheDocument();
     expect(
-      screen.getByRole("cell", { name: products[0].quantity.toString() })
+      screen.getByTestId(MAP_TEST_ID.CART_INCREASE_QUANTITY_BTN)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(MAP_TEST_ID.CART_DECREASE_QUANTITY_BTN)
     ).toBeInTheDocument();
     expect(
       screen.getAllByRole("cell", { name: products[0].totalPrice.toString() })

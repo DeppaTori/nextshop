@@ -5,3 +5,8 @@ export interface CartProduct {
   quantity: number;
   totalPrice: number;
 }
+
+export interface CartProductModifier {
+  productId: number;
+  quantity: number;
+}
