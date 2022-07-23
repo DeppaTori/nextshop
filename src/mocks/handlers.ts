@@ -25,4 +25,25 @@ export const handlers = [
       })
     );
   }),
+
+  rest.post(`${API_URL}/login`, async (req, res, ctx) => {
+    const { username, password } = await req.json();
+    if (username === "valid@user.com" && password === "validpassword") {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          success: true,
+          message: "logged in",
+        })
+      );
+    }
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        success: false,
+        message: "failed",
+      })
+    );
+  }),
 ];
