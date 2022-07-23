@@ -42,19 +42,33 @@ const cartSlice = createSlice({
       state: { items: CartProduct[] },
       action: PayloadAction<CartProductModifier>
     ) => {
-      state.items = state.items.map((item) => {
-        if (item.productId === action.payload.productId) {
-          return {
-            ...item,
-            quantity: action.payload.quantity,
-            totalPrice:
-              action.payload.quantity *
-              item.productPrice *
-              action.payload.quantity,
-          };
+      // payload quantity equals 0 means remove item from cart
+      if (action.payload.quantity === 0) {
+        const item = state.items.filter(
+          (item) => item.productId === action.payload.productId
+        );
+        if (item.length > 0) {
+          if (item[0].quantity === 1) {
+            state.items = state.items.filter(
+              (item) => item.productId !== action.payload.productId
+            );
+          }
         }
-        return item;
-      });
+      } else {
+        state.items = state.items.map((item) => {
+          if (item.productId === action.payload.productId) {
+            return {
+              ...item,
+              quantity: action.payload.quantity,
+              totalPrice:
+                action.payload.quantity *
+                item.productPrice *
+                action.payload.quantity,
+            };
+          }
+          return item;
+        });
+      }
     },
   },
 });

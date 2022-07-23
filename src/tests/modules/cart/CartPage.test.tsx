@@ -73,10 +73,12 @@ describe("CartPage", () => {
     expect(screen.getByDisplayValue(/2/i)).toBeInTheDocument();
   });
 
-  it("updates product quantity in cart when increaase button is clicked", () => {
+  it("updates product quantity in cart when decrease button is clicked", () => {
     setupRender(2);
     expect(screen.getByDisplayValue(/2/i)).toBeInTheDocument();
     user.click(screen.getByTestId(MAP_TEST_ID.CART_DECREASE_QUANTITY_BTN));
     expect(screen.getByDisplayValue(/1/i)).toBeInTheDocument();
+    user.click(screen.getByTestId(MAP_TEST_ID.CART_DECREASE_QUANTITY_BTN));
+    expect(screen.getByText(/no items in cart/i)).toBeInTheDocument();
   });
 });
