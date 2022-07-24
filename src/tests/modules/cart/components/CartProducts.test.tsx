@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { MAP_TEST_ID } from "../../../../constants";
 import { CartProduct } from "../../../../entity/CartProduct";
+import { IDRFormatCurrency } from "../../../../helpers/mixin";
 import { CartProducts } from "../../../../modules/cart/components/CartProducts";
 
 describe("CartProducts", () => {
@@ -54,7 +55,9 @@ describe("CartProducts", () => {
       screen.getByRole("cell", { name: products[0].productName })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("cell", { name: products[0].productPrice.toString() })
+      screen.getByRole("cell", {
+        name: IDRFormatCurrency(products[0].productPrice),
+      })
     ).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/quantity/i)).toBeInTheDocument();
     expect(
@@ -64,7 +67,9 @@ describe("CartProducts", () => {
       screen.getByTestId(MAP_TEST_ID.CART_DECREASE_QUANTITY_BTN)
     ).toBeInTheDocument();
     expect(
-      screen.getAllByRole("cell", { name: products[0].totalPrice.toString() })
+      screen.getAllByRole("cell", {
+        name: IDRFormatCurrency(products[0].totalPrice),
+      })
     ).toHaveLength(2);
     expect(screen.getByRole("cell", { name: "Total" })).toBeInTheDocument();
   });

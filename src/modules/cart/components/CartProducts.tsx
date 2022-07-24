@@ -1,5 +1,16 @@
+import {
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Button,
+} from "@mui/material";
 import { MAP_TEST_ID } from "../../../constants";
 import { CartProduct } from "../../../entity/CartProduct";
+import { IDRFormatCurrency } from "../../../helpers/mixin";
 
 interface CartProductProps {
   products: CartProduct[];
@@ -13,53 +24,63 @@ export const CartProducts = ({
   decreaseOnClick,
 }: CartProductProps) => {
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>No.</th>
-          <th>Item Name</th>
-          <th>Quantity</th>
-          <th>Price</th>
-          <th>Total Price</th>
-        </tr>
-      </thead>
-      <tbody>
-        {products.map((product, i) => (
-          <tr key={i}>
-            <td>{i + 1}</td>
-            <td>{product.productName}</td>
-            <td>
-              <button
-                data-testid={MAP_TEST_ID.CART_INCREASE_QUANTITY_BTN}
-                onClick={() =>
-                  increaseOnClick(product.productId, product.quantity)
-                }
-              >
-                +
-              </button>
-              <input
-                placeholder="quantity"
-                onChange={() => {}}
-                value={product.quantity}
-              />
-              <button
-                data-testid={MAP_TEST_ID.CART_DECREASE_QUANTITY_BTN}
-                onClick={() =>
-                  decreaseOnClick(product.productId, product.quantity)
-                }
-              >
-                -
-              </button>
-            </td>
-            <td>{product.productPrice}</td>
-            <td>{product.totalPrice}</td>
-          </tr>
-        ))}
-        <tr>
-          <td>Total</td>
-          <td>{products[0].totalPrice}</td>
-        </tr>
-      </tbody>
-    </table>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>No.</TableCell>
+            <TableCell>Item Name</TableCell>
+            <TableCell align="center">Quantity</TableCell>
+            <TableCell align="right">Price</TableCell>
+            <TableCell align="right">Total Price</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {products.map((product, i) => (
+            <TableRow key={i}>
+              <TableCell>{i + 1}</TableCell>
+              <TableCell>{product.productName}</TableCell>
+              <TableCell align="center">
+                <Button
+                  data-testid={MAP_TEST_ID.CART_INCREASE_QUANTITY_BTN}
+                  onClick={() =>
+                    increaseOnClick(product.productId, product.quantity)
+                  }
+                >
+                  +
+                </Button>
+                <input
+                  placeholder="quantity"
+                  onChange={() => {}}
+                  value={product.quantity}
+                />
+                <Button
+                  data-testid={MAP_TEST_ID.CART_DECREASE_QUANTITY_BTN}
+                  onClick={() =>
+                    decreaseOnClick(product.productId, product.quantity)
+                  }
+                >
+                  -
+                </Button>
+              </TableCell>
+              <TableCell align="right">
+                {IDRFormatCurrency(product.productPrice)}
+              </TableCell>
+              <TableCell align="right">
+                {IDRFormatCurrency(product.totalPrice)}
+              </TableCell>
+            </TableRow>
+          ))}
+          <TableRow>
+            <TableCell colSpan={4} align="right">
+              Total
+            </TableCell>
+            <TableCell align="right">
+              {IDRFormatCurrency(products[0].totalPrice)}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
