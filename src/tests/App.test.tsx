@@ -1,5 +1,10 @@
 import React from "react";
-import { render, screen, cleanup } from "@testing-library/react";
+import {
+  render,
+  screen,
+  cleanup,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import App from "../App";
 import { renderWithProvidersAndRouter } from "./redux/test_utils";
 import user from "@testing-library/user-event";
@@ -10,6 +15,7 @@ describe("App", () => {
     renderWithProvidersAndRouter(<App />);
 
     expect(screen.getByText(/welcome to nextshop/i)).toBeInTheDocument();
+
     await user.click(screen.getByRole("button", { name: /view my cart/i }));
 
     expect(
@@ -24,5 +30,15 @@ describe("App", () => {
       screen.getByRole("button", { name: /continue shopping/i })
     );
     expect(screen.getByText(/welcome to nextshop/i)).toBeInTheDocument();
+  });
+
+  it("renders login page when checkout button is clicked", async () => {
+    const loadingText = "loading products...";
+    renderWithProvidersAndRouter(<App />);
+    await waitForElementToBeRemoved(screen.queryByText(loadingText));
+    user.click(screen.getByRole("button", { name: /add to cart/i }));
+    await user.click(screen.getByRole("button", { name: /view my cart/i }));
+    await user.click(screen.getByRole("button", { name: /checkout/i }));
+    expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
   });
 });
