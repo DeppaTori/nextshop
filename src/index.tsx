@@ -5,11 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { setupStore } from "./redux/store";
 import { Provider } from "react-redux";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ProductsPage } from "./modules/products/ProductsPage";
-import { Product } from "./entity/Product";
-import { MyCart } from "./modules/cart/MyCart";
-
+import { BrowserRouter } from "react-router-dom";
 if (process.env.NODE_ENV === "development") {
   const { worker } = require("./mocks/browser");
   worker.start();

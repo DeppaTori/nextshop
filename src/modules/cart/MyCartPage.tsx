@@ -1,4 +1,5 @@
 import { Container } from "@mui/material";
+import { Link } from "react-router-dom";
 import { CartProduct } from "../../entity/CartProduct";
 import { Product } from "../../entity/Product";
 import {
@@ -8,8 +9,9 @@ import {
 } from "../../redux/cartSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { CartProducts } from "./components/CartProducts";
+import Button from "@mui/material/Button";
 
-export const MyCart = () => {
+export const MyCartPage = () => {
   const dispatch = useAppDispatch();
   const items = useAppSelector(getAllItems);
   const totalItems = useAppSelector(getTotalItems);
@@ -44,6 +46,17 @@ export const MyCart = () => {
       ) : (
         <p>No items in cart</p>
       )}
+      <p>
+        <Link to="/">
+          <Button>Continue Shopping</Button>
+        </Link>
+
+        {items.length > 0 && (
+          <Link to="/checkout">
+            <Button>Checkout</Button>
+          </Link>
+        )}
+      </p>
     </Container>
   );
 };

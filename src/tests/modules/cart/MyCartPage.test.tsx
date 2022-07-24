@@ -1,21 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { Product } from "../../../entity/Product";
-import { MyCart } from "../../../modules/cart/MyCart";
-import { renderWithProviders } from "../../redux/test_utils";
+import { renderWithProvidersAndRouter } from "../../redux/test_utils";
 import user from "@testing-library/user-event";
 import { CartProduct } from "../../../entity/CartProduct";
 import { MAP_TEST_ID } from "../../../constants";
+import { MyCartPage } from "../../../modules/cart/MyCartPage";
 
 describe("CartPage", () => {
-  // const products: Product[] = [
-  //   {
-  //     id: 1,
-  //     name: "Batman Action Figure",
-  //     description: "This is an action figure",
-  //     price: 65000,
-  //   },
-  // ];
-
   const setupRender = (quantity: number) => {
     const initialItems: CartProduct[] = [
       {
@@ -26,7 +17,7 @@ describe("CartPage", () => {
         productPrice: 1200,
       },
     ];
-    renderWithProviders(<MyCart />, {
+    renderWithProvidersAndRouter(<MyCartPage />, {
       preloadedState: {
         cart: {
           items: initialItems,
@@ -37,34 +28,18 @@ describe("CartPage", () => {
   };
 
   it("renders My Cart heading", () => {
-    renderWithProviders(<MyCart />);
+    renderWithProvidersAndRouter(<MyCartPage />);
     expect(
       screen.getByRole("heading", { name: "My Cart" })
     ).toBeInTheDocument();
     expect(screen.getByText(/no items in cart/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /continue shopping/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /checkout/i })
+    ).not.toBeInTheDocument();
   });
-
-  // it("renders product name from initial state", () => {
-  //   const initialItems: CartProduct[] = [
-  //     {
-  //       productId: 1,
-  //       productName: "Batman Action Figure",
-  //       quantity: 1,
-  //       totalPrice: 1200,
-  //       productPrice: 1200,
-  //     },
-  //   ];
-  //   const { getByText } = renderWithProviders(<MyCart />, {
-  //     preloadedState: {
-  //       cart: {
-  //         items: initialItems,
-  //         totalItems: 0,
-  //       },
-  //     },
-  //   });
-
-  //   expect(getByText(/batman action figure/i)).toBeInTheDocument();
-  // });
 
   it("updates product quantity in cart when increaase button is clicked", () => {
     setupRender(1);
@@ -80,5 +55,12 @@ describe("CartPage", () => {
     expect(screen.getByDisplayValue(/1/i)).toBeInTheDocument();
     user.click(screen.getByTestId(MAP_TEST_ID.CART_DECREASE_QUANTITY_BTN));
     expect(screen.getByText(/no items in cart/i)).toBeInTheDocument();
+  });
+
+  it("renders checkout button where there is a item in cart", () => {
+    setupRender(1);
+    expect(
+      screen.getByRole("button", { name: /checkout/i })
+    ).toBeInTheDocument();
   });
 });
