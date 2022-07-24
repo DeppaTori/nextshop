@@ -1,0 +1,10 @@
+.LoginPage-heading {
+  margin-bottom: 0px;
+}
+.LoginPage-slogan {
+  margin: 0px;
+  margin-bottom: 30px;
+}
+.LoginPage-errmsg {
+  color: red;
+}

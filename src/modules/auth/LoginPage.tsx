@@ -1,5 +1,17 @@
+import "./LoginPage.css";
+import {
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Stack,
+  TextField,
+  Box,
+} from "@mui/material";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { API_URL } from "../../helpers/constant";
+import { validateEmail } from "../../helpers/mixin";
 
 export const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -39,37 +51,51 @@ export const LoginPage = () => {
     }
   };
 
-  const validateEmail = (email: string) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
-
   return (
-    <>
-      {errMsg.length > 0 && <p>{errMsg}</p>}
-      {isLoading && <p>Loading...</p>}
+    <Container>
+      <Link to="/">Nextshop</Link>
 
-      <form role="form" onSubmit={handleSubmit}>
-        <input
-          name="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <br />
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
-        <input type="submit" value="login" />
-      </form>
-    </>
+      {isLoading && <p>Loading...</p>}
+      <Box sx={{ width: "100%" }}>
+        <Stack>
+          <Card sx={{ minWidth: 275, maxWidth: 300 }}>
+            <CardContent>
+              <form role="form" onSubmit={handleSubmit}>
+                <h2 className="LoginPage-heading">Login</h2>
+                <p className="LoginPage-slogan">
+                  Shopping with cool stuff today
+                </p>
+                {errMsg.length > 0 && (
+                  <p className="LoginPage-errmsg">{errMsg}</p>
+                )}
+                <TextField
+                  name="email"
+                  label="Email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  sx={{ marginBottom: 2 }}
+                />
+                <br />
+                <TextField
+                  name="password"
+                  type="password"
+                  label="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  sx={{ marginBottom: 2 }}
+                />
+                <br />
+
+                <Button variant="contained" type="submit">
+                  Login
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </Stack>
+      </Box>
+    </Container>
   );
 };

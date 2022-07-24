@@ -1,19 +1,20 @@
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-  waitFor,
-} from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { LoginPage } from "../../../modules/auth/LoginPage";
 import user from "@testing-library/user-event";
+import { renderWithProvidersAndRouter } from "../../redux/test_utils";
 
 describe("LoginPage", () => {
-  it("renders username field, password field, login button", () => {
-    render(<LoginPage />);
+  it("renders username field, password field, login button etc", () => {
+    renderWithProvidersAndRouter(<LoginPage />);
     expect(screen.getByRole("form")).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /login/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /nextshop/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /login/i })).toBeInTheDocument();
+    expect(
+      screen.getByText(/shopping with cool stuff today/i)
+    ).toBeInTheDocument();
   });
 
   it("renders error message when login button clicked while username or password is blank", () => {
@@ -23,7 +24,7 @@ describe("LoginPage", () => {
     const nonValidPassErrMsg = "Password must be 8 characters or more";
     let emailInput, passwordInput, loginBtn;
 
-    render(<LoginPage />);
+    renderWithProvidersAndRouter(<LoginPage />);
     loginBtn = screen.getByRole("button", { name: /login/i });
     expect(screen.queryByText(emailErrMsg)).not.toBeInTheDocument();
     user.click(loginBtn);
@@ -52,7 +53,7 @@ describe("LoginPage", () => {
   });
 
   it("renders success login when user is registered", async () => {
-    render(<LoginPage />);
+    renderWithProvidersAndRouter(<LoginPage />);
     user.type(screen.getByPlaceholderText(/email/i), "valid@user.com");
     user.type(screen.getByPlaceholderText(/password/i), "validpassword");
     user.click(screen.getByRole("button", { name: /login/i }));
@@ -63,7 +64,7 @@ describe("LoginPage", () => {
   });
 
   it("renders email or password is incorrect when user is not registered", async () => {
-    render(<LoginPage />);
+    renderWithProvidersAndRouter(<LoginPage />);
     user.type(screen.getByPlaceholderText(/email/i), "notvalid@user.com");
     user.type(screen.getByPlaceholderText(/password/i), "notvalidpassword");
     user.click(screen.getByRole("button", { name: /login/i }));
