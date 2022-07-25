@@ -1,13 +1,8 @@
 import { useState } from "react";
 import { fakeAuthProvider } from "./fakeAuthProvider";
+import { AuthContext } from "./helpers";
 
-export const AuthProvider = ({
-  children,
-  createProvider,
-}: {
-  children: React.ReactNode;
-  createProvider: Function;
-}) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   let [user, setUser] = useState<any>(null);
 
   let signin = (newUser: string, callback: VoidFunction) => {
@@ -26,5 +21,5 @@ export const AuthProvider = ({
 
   let value = { user, signin, signout };
 
-  return createProvider(value, children);
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

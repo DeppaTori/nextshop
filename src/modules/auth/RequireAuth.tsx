@@ -1,15 +1,9 @@
 import { useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { AuthContextType } from "./helpers";
+import { AuthContext, AuthContextType } from "./helpers";
 
-export const RequireAuth = ({
-  children,
-  context,
-}: {
-  children: JSX.Element;
-  context: React.Context<AuthContextType>;
-}) => {
-  let auth = useContext(context);
+export const RequireAuth = ({ children }: { children: JSX.Element }) => {
+  let auth = useContext(AuthContext);
   let location = useLocation();
 
   if (!auth.user) {

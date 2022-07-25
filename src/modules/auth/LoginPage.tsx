@@ -8,16 +8,35 @@ import {
   TextField,
   Box,
 } from "@mui/material";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { API_URL } from "../../helpers/constant";
 import { validateEmail } from "../../helpers/mixin";
+import { AuthContext } from "./helpers";
+
+interface FromPathName {
+  from: { pathname: string };
+}
 
 export const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state;
+
+  function isFromPathName(state: unknown): state is FromPathName {
+    return typeof state === "object" && state !== null && "from" in state;
+  }
+
+  let from: string;
+  if (isFromPathName(state)) {
+    from = state.from.pathname;
+  }
+  // const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -46,6 +65,9 @@ export const LoginPage = () => {
           setErrMsg("Username or password is incorrect.");
         }
         setIsLoading(false);
+        auth.signin(email, () => {
+          navigate(from, { replace: true });
+        });
       };
       fetchData();
     }

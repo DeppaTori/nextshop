@@ -39,7 +39,7 @@ export function renderWithProvidersAndRouter(
   function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
     return (
       <Provider store={store}>
-        <BrowserRouter>{children}</BrowserRouter>
+        <MemoryRouter>{children}</MemoryRouter>
       </Provider>
     );
   }

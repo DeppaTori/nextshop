@@ -46,4 +46,18 @@ export const handlers = [
       })
     );
   }),
+
+  rest.get(`${API_URL}/user/1`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        data: {
+          id: 1,
+          firstName: "Tiara",
+          lastName: "Dewi",
+          address: "Jakarta",
+        },
+      })
+    );
+  }),
 ];

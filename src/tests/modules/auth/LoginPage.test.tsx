@@ -2,10 +2,19 @@ import { screen, waitFor } from "@testing-library/react";
 import { LoginPage } from "../../../modules/auth/LoginPage";
 import user from "@testing-library/user-event";
 import { renderWithProvidersAndRouter } from "../../redux/test_utils";
+import { AuthProvider } from "../../../modules/auth/AuthProvider";
 
 describe("LoginPage", () => {
+  const setupRender = () => {
+    renderWithProvidersAndRouter(
+      <AuthProvider>
+        <LoginPage />
+      </AuthProvider>
+    );
+  };
+
   it("renders username field, password field, login button etc", () => {
-    renderWithProvidersAndRouter(<LoginPage />);
+    setupRender();
     expect(screen.getByRole("form")).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
@@ -24,7 +33,7 @@ describe("LoginPage", () => {
     const nonValidPassErrMsg = "Password must be 8 characters or more";
     let emailInput, passwordInput, loginBtn;
 
-    renderWithProvidersAndRouter(<LoginPage />);
+    setupRender();
     loginBtn = screen.getByRole("button", { name: /login/i });
     expect(screen.queryByText(emailErrMsg)).not.toBeInTheDocument();
     user.click(loginBtn);
@@ -53,7 +62,7 @@ describe("LoginPage", () => {
   });
 
   it("renders success login when user is registered", async () => {
-    renderWithProvidersAndRouter(<LoginPage />);
+    setupRender();
     user.type(screen.getByPlaceholderText(/email/i), "valid@user.com");
     user.type(screen.getByPlaceholderText(/password/i), "validpassword");
     user.click(screen.getByRole("button", { name: /login/i }));
@@ -64,7 +73,7 @@ describe("LoginPage", () => {
   });
 
   it("renders email or password is incorrect when user is not registered", async () => {
-    renderWithProvidersAndRouter(<LoginPage />);
+    setupRender();
     user.type(screen.getByPlaceholderText(/email/i), "notvalid@user.com");
     user.type(screen.getByPlaceholderText(/password/i), "notvalidpassword");
     user.click(screen.getByRole("button", { name: /login/i }));
