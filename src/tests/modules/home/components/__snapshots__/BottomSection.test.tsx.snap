@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BottomSection renders year 1`] = `
+<div>
+  <div>
+    <p>
+      NextShop @2022
+    </p>
+  </div>
+</div>
+`;

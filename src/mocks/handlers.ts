@@ -34,6 +34,7 @@ export const handlers = [
         ctx.json({
           success: true,
           message: "logged in",
+          token: "ordinaryjwttoken",
         })
       );
     }
